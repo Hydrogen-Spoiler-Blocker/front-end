@@ -1,9 +1,23 @@
 {
-  "name": "Chrome Extension Webpack",
+  "name": "webpackspoilerblocker2",
   "options_page": "options.html",
   "background": {
     "page": "background.html"
   },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "<all_urls>",
+    "storage",
+    "http://domain/getjson*",
+    "webRequest",
+    "webRequestBlocking",
+    "https://*/*",
+    "http://*/*"
+  ],
+  "web_accessible_resources": [
+    "https/*"
+  ],
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
@@ -13,4 +27,5 @@
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  
 }
