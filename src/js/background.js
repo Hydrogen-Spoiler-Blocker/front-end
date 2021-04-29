@@ -1,6 +1,7 @@
 import '../img/icon-128.png'
 import '../img/icon-34.png'
 import * as tf from '@tensorflow/tfjs';
+import { tensor2d } from '@tensorflow/tfjs';
 var model;
 
 console.log('from background js')
@@ -24,7 +25,7 @@ async function fetchVocabulary() {
 
 async function loadModel() {
     
-    const githublink = "https://raw.githubusercontent.com/Hydrogen-Spoiler-Blocker/front-end/development/model.json"
+    const githublink = "https://raw.githubusercontent.com/Hydrogen-Spoiler-Blocker/models/master/model.json"
     model = await tf.loadLayersModel(githublink);
     console.log("model loaded")
 }
@@ -46,12 +47,14 @@ const encoder = (string, vocabulary) => {
 
 loadModel().then(() => {
     fetchVocabulary().then(vocab => {
-        const text = "movie is amazing movie is a cool kid" //8 st
+        const text = "My name is Squidward" //8 st
         console.log("parsed text from vocabulary: ",encoder(text, vocab))
         var vocablength = encoder(text, vocab).length
-        output = model.predict(tf.tensor2d([ encoder(text, vocab)]))
+        var shape = [1, 8]
+        console.log(model.summary())
+        var output = model.predict(tf.tensor2d(encoder(text, vocab), [1, vocablength]))
         //output = model.predict([encoder(text, vocab), [vocablength, 1]])
-        console.log("PREDICTION : ", output );
+        console.log("PREDICTION : ", output.dataSync()[0] );
 
     });
 })

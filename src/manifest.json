@@ -1,6 +1,7 @@
 {
   "name": "webpackspoilerblocker2",
   "options_page": "options.html",
+  "version": "1",
   "background": {
     "page": "background.html"
   },
@@ -19,12 +20,9 @@
     "https/*"
   ],
   "browser_action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_popup": "popup.html"
   },
-  "icons": {
-    "128": "icon-128.png"
-  },
+  
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
   
