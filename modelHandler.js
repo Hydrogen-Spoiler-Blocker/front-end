@@ -64,12 +64,24 @@ loadModel().then(() => {
     });
 })
 
+
+function test(paragraph){
+    console.log("paragraph:", paragraph);
+
+    //model
+        //query
+    
+}
+
 chrome.tabs.onActivated.addListener(tab => {
     chrome.tabs.get(tab.tabId, current_tab => {
         console.log(current_tab.url);
         if(/^https:/.test(current_tab.url)){
-            console.log("succes");
-            chrome.tabs.insertCSS(null, {file: './style.css'});
+            
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, test);
+              });
+
             chrome.tabs.executeScript(null, {file: './foreground.js'})
         }
     })

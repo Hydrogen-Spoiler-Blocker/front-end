@@ -1,21 +1,20 @@
 console.log("from foreground");
+var array = []
 
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(request.greeting);
 
-
-var paragraphs = document.getElementsByTagName("p")
-for (element in paragraphs) {
-    console.log(paragraphs[element].innerText)
-};
-
-
-
-
-
-
-
-
-
-
+        var paragraphs = document.getElementsByTagName("p")
+       
+        for (element in paragraphs) {
+            array.push(paragraphs[element].innerText)
+            console.log("id",paragraphs[element]);
+        };
+        console.log("array", array);
+        sendResponse(array)
+    }
+  );
 
 
 /*function replaceText(element){
