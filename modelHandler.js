@@ -74,15 +74,7 @@ chrome.tabs.onActivated.addListener(tab => {
 
                     loadModel().then(() => {
                         fetchVocabulary().then(vocab => {
-                            //const text = "My name is Squidward" //8 st
-                            //console.log("parsed text from vocabulary: ",encoder(text, vocab))
-                            //var vocablength = encoder(text, vocab).length
-                            //var shape = [1, 8]
-                            console.log(model.summary())
-                            //var output = model.predict(tf.tensor2d(encoder(text, vocab), [1, vocablength]))
-                            //output = model.predict([encoder(text, vocab), [vocablength, 1]])
-                            //console.log("PREDICTION : ", output.dataSync()[0] );
-                            
+                            console.log(model.summary())                
                             var paragraphsIndexToBlock = []
                             var counter = 0
                             for (element in paragraphs) {
@@ -97,10 +89,7 @@ chrome.tabs.onActivated.addListener(tab => {
                             //model
                             //query
         
-                            chrome.tabs.sendMessage(tabs[0].id, {block: paragraphsIndexToBlock}, function success(response){
-                                console.log("response:", response);
-            
-                            });
+                            chrome.tabs.sendMessage(tabs[0].id, {block: paragraphsIndexToBlock});
                         });
 
                     })        
