@@ -1,6 +1,8 @@
 console.log("from foreground");
 var array = []
 
+
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         
