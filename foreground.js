@@ -3,21 +3,30 @@ var array = []
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log(request.greeting);
-
-        var paragraphs = document.getElementsByTagName("p")
-       
-        for (element in paragraphs) {
-            array.push(paragraphs[element].innerText)
-            console.log("id",paragraphs[element]);
-        };
-        console.log("array", array);
-        sendResponse(array)
+        
+        if(request.block){
+            for (element in request.block){    
+                document.getElementsByTagName("p")[element].style.color = 'black'
+                document.getElementsByTagName("p")[element].style.backgroundColor = "black"
+            }
+            
+        }
+        else{
+            console.log("Now we scrape");
+            var paragraphs = document.getElementsByTagName("p")
+        
+            for (element in paragraphs) {
+                if(paragraphs[element].innerText) array.push(paragraphs[element].innerText) 
+            };
+            //console.log("array", array);
+            sendResponse(array)
+        }
     }
   );
 
 
-/*function replaceText(element){
+/*
+function replaceText(element){
     if(element.hasChildNodes()){
         element.childNodes.forEach(replaceText)
     } else if (element.nodeType === Text.TEXT_NODE){
@@ -28,7 +37,8 @@ chrome.runtime.onMessage.addListener(
         //}
         //element.textContent = element.textContent.replace(/coronavirus/gi, 'BLOCKED')
     }
-}*/
+}
+*/
 
 /*const first = document.createElement('button');
 first.innerText = "SET DATA";
