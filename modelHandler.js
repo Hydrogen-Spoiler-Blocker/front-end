@@ -63,28 +63,31 @@ loadModel().then(() => {
     });
 })
 
-chrome.tabs.onUpdated.addListener(tab => {
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function checkIfSpoiler(paragraphs){
-                    console.log("paragraph:", paragraphs);
+chrome.tabs.onUpdated.addListener((tabId, tab)=>{
+    console.log("tab", tab.url);
+    console.log("tabID", tabId);
 
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabId, {greeting: "hello"}, function checkIfSpoiler(paragraphs){
+                    //console.log("paragraph:", paragraphs);
                     loadModel().then(() => {
                         fetchVocabulary().then(vocab => {
-                            console.log(model.summary())                
+                            //console.log(model.summary())                
                             var paragraphsIndexToBlock = []
                             var counter = 0
                             for (element in paragraphs) {
                                 var vocablength = encoder(element, vocab).length
                                 var output = model.predict(tf.tensor2d(encoder(element, vocab), [1, vocablength]))
-                                console.log("PREDICTION: ", output.dataSync()[0] );
+                                //console.log("PREDICTION: ", output.dataSync()[0] );
                                 if( output.dataSync()[0] > -0.4){
                                     paragraphsIndexToBlock.push(counter)
                                 }
                                 counter++
                             }
-                            chrome.tabs.sendMessage(tabs[0].id, {block: paragraphsIndexToBlock});
+                            chrome.tabs.sendMessage(tabId, {block: paragraphsIndexToBlock});
                         });
-                    })        
+                    })  
+                          
                 });
               });
             chrome.tabs.executeScript(null, {file: './foreground.js'})
