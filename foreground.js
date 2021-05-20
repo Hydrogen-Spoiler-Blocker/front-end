@@ -6,9 +6,9 @@ chrome.runtime.onMessage.addListener(
         
         if(request.block){
             
-            for (element in request.block){    
-                document.getElementsByTagName("p")[element].style.color = 'black'
-                document.getElementsByTagName("p")[element].style.backgroundColor = "black"
+            for (element in request.block){  
+                document.getElementsByTagName("p")[request.block[element]].style.color = 'black'
+                document.getElementsByTagName("p")[request.block[element]].style.backgroundColor = "black"
             }
             
         }

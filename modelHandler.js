@@ -78,8 +78,9 @@ chrome.tabs.onUpdated.addListener((tabId, tab)=>{
                             for (element in paragraphs) {
                                 var vocablength = encoder(element, vocab).length
                                 var output = model.predict(tf.tensor2d(encoder(element, vocab), [1, vocablength]))
-                                //console.log("PREDICTION: ", output.dataSync()[0] );
-                                if( output.dataSync()[0] > -0.4){
+                                
+                                if(output.dataSync()[0] > -0.4){
+                                    console.log("larger than 0,4", output.dataSync()[0], " counter: ", counter);
                                     paragraphsIndexToBlock.push(counter)
                                 }
                                 counter++
