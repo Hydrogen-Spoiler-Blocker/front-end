@@ -5,6 +5,7 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         
         if(request.block){
+            
             for (element in request.block){    
                 document.getElementsByTagName("p")[element].style.color = 'black'
                 document.getElementsByTagName("p")[element].style.backgroundColor = "black"
@@ -12,11 +13,10 @@ chrome.runtime.onMessage.addListener(
             
         }
         else{
-            console.log("Now we scrape");
             var paragraphs = document.getElementsByTagName("p")
         
             for (element in paragraphs) {
-                if(paragraphs[element].innerText) array.push(paragraphs[element].innerText) 
+                array.push(paragraphs[element].innerText) 
             };
             //console.log("array", array);
             sendResponse(array)

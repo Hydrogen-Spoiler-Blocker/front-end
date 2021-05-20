@@ -63,11 +63,7 @@ loadModel().then(() => {
     });
 })
 
-chrome.tabs.onActivated.addListener(tab => {
-    chrome.tabs.get(tab.tabId, current_tab => {
-        console.log(current_tab.url);
-        if(/^https:/.test(current_tab.url)){
-            
+chrome.tabs.onUpdated.addListener(tab => {
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function checkIfSpoiler(paragraphs){
                     console.log("paragraph:", paragraphs);
@@ -86,19 +82,12 @@ chrome.tabs.onActivated.addListener(tab => {
                                 }
                                 counter++
                             }
-                            //model
-                            //query
-        
                             chrome.tabs.sendMessage(tabs[0].id, {block: paragraphsIndexToBlock});
                         });
-
                     })        
-
                 });
               });
-
             chrome.tabs.executeScript(null, {file: './foreground.js'})
-        }
-    })
+        
+    
 })
-
