@@ -14,13 +14,14 @@ chrome.runtime.onMessage.addListener(
             }
             
         }
-        else{
+        else {
             var paragraphs = document.getElementsByTagName("p")
         
-            for (element in paragraphs) {
-                array.push(paragraphs[element].innerText) 
+            for (i in paragraphs) {
+                console.log("paragraph", paragraphs[i].innerText)
+                array.push(paragraphs[i].innerText) 
             };
-            //console.log("array", array);
+            console.log("paragraphs to block::::::", array);
             sendResponse(array)
         }
     }

@@ -1,17 +1,5 @@
 
 var model;
-    
-function make_prediction() {
-    var a, b, output;
-    a = Number(document.getElementById("first").value);
-    b = Number(document.getElementById("second").value);
-    input_xs = tf.tensor2d([
-        [a, b]
-    ]);
-    output = model.predict(input_xs);
-    const outputData = output.dataSync();
-    document.getElementById("answer").value = Number(outputData[0] > 0.5);
-}
 
 async function fetchVocabulary() {
     console.log("in getVocabulary");
@@ -29,7 +17,7 @@ async function fetchVocabulary() {
 }
 
 const encoder = (string, vocabulary) => {
-    let array = string.toLowerCase().split(" ")
+    let array = string[0].toLowerCase().split(" ")
     let vectorized = []
     for (const element of array) {
       let position = vocabulary.indexOf(element)
@@ -49,7 +37,7 @@ async function loadModel() {
     console.log("model loaded")
 }
 
-
+/*
 loadModel().then(() => {
     fetchVocabulary().then(vocab => {
         const text = "My name is Squidward" //8 st
@@ -61,9 +49,11 @@ loadModel().then(() => {
         //output = model.predict([encoder(text, vocab), [vocablength, 1]])
         console.log("PREDICTION : ", output.dataSync()[0] );
     });
-})
+}) */
 
 chrome.tabs.onUpdated.addListener((tabId, tab)=>{
+    
+
     console.log("tab", tab.url);
     console.log("tabID", tabId);
 
@@ -71,17 +61,26 @@ chrome.tabs.onUpdated.addListener((tabId, tab)=>{
                 chrome.tabs.sendMessage(tabId, {greeting: "hello"}, function checkIfSpoiler(paragraphs){
                     //console.log("paragraph:", paragraphs);
                     loadModel().then(() => {
+                        console.log("fetched model done")
                         fetchVocabulary().then(vocab => {
+                            //test of the vocabulary
+                            var vectoriseddata = encoder(["The Avengers go back in time to get the Infinity Stones before they are found at various times in the MCU (Natasha sacrifices herself so Clint can get the Soul Stone). Stark develops a gauntlet which the Hulk puts on and uses to snap back the beings who were killed by the original snap. Thanos arrives and wages a full on war against all the heroes from the MCU movies. When Stark and Thanos fight, Stark takes the stones and uses them to eliminate Thanos and his army so that the universe may live in peace. The power of the stones is too much, and Stark dies. After the funeral, Banner and Wilson help Rogers go back in time to return the stones to their places of origin. Rogers returns as an old man to give the shield to Wilson. We are then shown Rogers dancing with Peggy Carter, and they kiss as the movie ends. There are no mid or end credit scenes."], vocab)
+                            vocab.pop()
+                            console.log("fetched vocabulary done:::::", vocab)
+                            console.log("vectorised data::::::", vectoriseddata)
                             //console.log(model.summary())                
                             var paragraphsIndexToBlock = []
                             var counter = 0
-                            for (element in paragraphs) {
-                                var vocablength = encoder(element, vocab).length
-                                var output = model.predict(tf.tensor2d(encoder(element, vocab), [1, vocablength]))
-                                
-                                if(output.dataSync()[0] > -0.4){
-                                    console.log("larger than 0,4", output.dataSync()[0], " counter: ", counter);
-                                    paragraphsIndexToBlock.push(counter)
+                            for (i in paragraphs) {
+                                if(paragraphs[i] != null) {
+                                    var vocablength = encoder([paragraphs[i]], vocab).length
+                                    console.log("para witb rback:", [paragraphs[i]])
+                                    var output = model.predict(tf.tensor2d([encoder([paragraphs[i]], vocab)], [1, vocablength]))
+                                    console.log("prediction made::", output.dataSync()[0])
+                                    if(output.dataSync()[0] >= 0){
+                                        console.log("predicted spoiler:", output.dataSync()[0], " counter: ", counter);
+                                        paragraphsIndexToBlock.push(counter)
+                                    }
                                 }
                                 counter++
                             }
