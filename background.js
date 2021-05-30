@@ -1,6 +1,0 @@
-console.log('from background')
-
-
-
-
-
