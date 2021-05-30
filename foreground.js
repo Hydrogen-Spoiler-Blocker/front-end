@@ -3,14 +3,22 @@ var array = []
 
 
 
+
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         
+
         if(request.block){
-            
+            var btn = document.createElement("button")
             for (element in request.block){  
-                document.getElementsByTagName("p")[request.block[element]].style.color = 'black'
-                document.getElementsByTagName("p")[request.block[element]].style.backgroundColor = "black"
+                const paragraph = document.getElementsByTagName("p")[request.block[element]]
+                //document.getElementsByTagName("p")[request.block[element]].style.color = 'white'
+                //document.getElementsByTagName("p")[request.block[element]].style.backgroundColor = "white"
+                paragraph.classList.add("isSpoiler")
+                paragraph.innerText = "Content contains spoilers"
+                //document.getElementsByTagName("p")[request.block[element]].appendChild(btn)
+                
             }
             
         }
@@ -18,10 +26,10 @@ chrome.runtime.onMessage.addListener(
             var paragraphs = document.getElementsByTagName("p")
         
             for (i in paragraphs) {
-                console.log("paragraph", paragraphs[i].innerText)
+                //console.log("paragraph", paragraphs[i].innerText)
                 array.push(paragraphs[i].innerText) 
             };
-            console.log("paragraphs to block::::::", array);
+            //console.log("paragraphs to block::::::", array);
             sendResponse(array)
         }
     }

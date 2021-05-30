@@ -1,3 +1,34 @@
+console.log("HEHEHEHE");
+
+var currentState = localStorage.currentState || "on";
+var button = document.querySelector('#onOffSwitch')
+
+if(currentState==="off"){
+    button.checked = false;
+}else button.checked = true
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('#onOffSwitch').addEventListener('change', changeHandler);
+});
+
+function changeHandler(){
+    if(onOffSwitch.checked){
+        localStorage.currentState="on"
+        chrome.runtime.sendMessage({switch: "on"});
+    }
+    else{
+        localStorage.currentState="off"
+        chrome.runtime.sendMessage({switch: "off"}); 
+    }
+ }
+
+// document.querySelector('#onOffBtn').addEventListener('click', function(){
+//     console.log("clicked");
+//     chrome.tabs.query({currentWindow: true, active: true}, function(tab){
+//         var activeTab = tabs[0]
+//         chrome.tabs.send
+//     })
+// })
 
 //replaceText(document.body)
 

@@ -50,13 +50,22 @@ loadModel().then(() => {
         console.log("PREDICTION : ", output.dataSync()[0] );
     });
 }) */
+var onOffSwitch = localStorage.onOffSwitch || "on";
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    
+    onOffSwitch = message.switch
+    console.log(onOffSwitch);
+    
+});
+
 
 chrome.tabs.onUpdated.addListener((tabId, tab)=>{
     
-
-    console.log("tab", tab.url);
-    console.log("tabID", tabId);
-
+    if(onOffSwitch != "on") return
+    //console.log("tab", tab.url);
+    //console.log("tabID", tabId);
+            chrome.tabs.insertCSS(tabId, {file: "style.css"})
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 chrome.tabs.sendMessage(tabId, {greeting: "hello"}, function checkIfSpoiler(paragraphs){
                     //console.log("paragraph:", paragraphs);
@@ -66,17 +75,17 @@ chrome.tabs.onUpdated.addListener((tabId, tab)=>{
                             //test of the vocabulary
                             var vectoriseddata = encoder(["The Avengers go back in time to get the Infinity Stones before they are found at various times in the MCU (Natasha sacrifices herself so Clint can get the Soul Stone). Stark develops a gauntlet which the Hulk puts on and uses to snap back the beings who were killed by the original snap. Thanos arrives and wages a full on war against all the heroes from the MCU movies. When Stark and Thanos fight, Stark takes the stones and uses them to eliminate Thanos and his army so that the universe may live in peace. The power of the stones is too much, and Stark dies. After the funeral, Banner and Wilson help Rogers go back in time to return the stones to their places of origin. Rogers returns as an old man to give the shield to Wilson. We are then shown Rogers dancing with Peggy Carter, and they kiss as the movie ends. There are no mid or end credit scenes."], vocab)
                             vocab.pop()
-                            console.log("fetched vocabulary done:::::", vocab)
-                            console.log("vectorised data::::::", vectoriseddata)
+                            //console.log("fetched vocabulary done:::::", vocab)
+                            //console.log("vectorised data::::::", vectoriseddata)
                             //console.log(model.summary())                
                             var paragraphsIndexToBlock = []
                             var counter = 0
                             for (i in paragraphs) {
                                 if(paragraphs[i] != null) {
                                     var vocablength = encoder([paragraphs[i]], vocab).length
-                                    console.log("para witb rback:", [paragraphs[i]])
+                                    //console.log("para witb rback:", [paragraphs[i]])
                                     var output = model.predict(tf.tensor2d([encoder([paragraphs[i]], vocab)], [1, vocablength]))
-                                    console.log("prediction made::", output.dataSync()[0])
+                                    //console.log("prediction made::", output.dataSync()[0])
                                     if(output.dataSync()[0] >= 0){
                                         console.log("predicted spoiler:", output.dataSync()[0], " counter: ", counter);
                                         paragraphsIndexToBlock.push(counter)

@@ -9,27 +9,24 @@
     border-width: 5px;
   }
 
+
+.bodyFitContent{
+  width: fit-content;
+  block-size: fit-content;
+}
 .spoilerBlockerTitle {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: rgba(0, 0, 0, 0.863);
 }
 
-#first {
-    position: absolute;
-    top: 20%;
-    left: 10%;
-}
+
 #reportBtn {
   position: absolute;
   top: 20%;
   left: 10%;
 }
 
-#second {
-    position: absolute;
-    top: 30%;
-    left: 10%;
-}
+
 
 /* The switch - the box around the slider */
 .switch {
@@ -95,7 +92,3 @@
     border-radius: 50%;
   }
 
-  .crx_mouse_visited {
-    background-color: #f9ffa4 !important;
-    outline: 1px solid #6b6b6b !important;
-  }
